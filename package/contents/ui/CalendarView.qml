@@ -29,7 +29,8 @@ Item {
     Layout.minimumHeight: _minimumHeight
 
     // The "sensible" values
-    property int _minimumWidth: (showAgenda ? agendaViewWidth : 0) + monthViewWidth
+//    property int _minimumWidth: (showAgenda ? agendaViewWidth : 0) + monthViewWidth
+    property int _minimumWidth: monthViewWidth
     property int _minimumHeight: units.gridUnit * 14
     Layout.preferredWidth: _minimumWidth
     Layout.preferredHeight: _minimumHeight * 1.5
@@ -39,7 +40,8 @@ Item {
     readonly property int agendaViewWidth: _minimumHeight * 1.5
     readonly property int monthViewWidth: monthView.showWeekNumbers ? Math.round(_minimumHeight * 1.75) : Math.round(_minimumHeight * 1.5)
 
-    property int boxWidth: (agendaViewWidth + monthViewWidth - ((showAgenda ? 3 : 4) * spacing)) / 2
+//    property int boxWidth: (agendaViewWidth + monthViewWidth - ((showAgenda ? 3 : 4) * spacing)) / 2
+    property int boxWidth: monthViewWidth
 
     property int spacing: units.largeSpacing
     property alias borderWidth: monthView.borderWidth
@@ -58,14 +60,12 @@ Item {
         id: agenda
         visible: calendar.showAgenda
 
-        width: boxWidth
         anchors {
-            top: parent.top
+            top: cal.bottom
             left: parent.left
+            right: parent.right
             bottom: parent.bottom
-            leftMargin: spacing
-            topMargin: spacing
-            bottomMargin: spacing
+            margins: spacing
         }
 
         function dateString(format) {
@@ -322,11 +322,11 @@ Item {
     }
     Item {
         id: cal
-        width: boxWidth
+        height: _minimumHeight * 1.4
         anchors {
             top: parent.top
+            left: parent.left
             right: parent.right
-            bottom: parent.bottom
             margins: spacing
         }
 
