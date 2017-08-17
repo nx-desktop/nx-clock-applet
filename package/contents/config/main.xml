@@ -66,4 +66,10 @@
       <default>holidays</default>
     </entry>
   </group>
+  <group name="Weather">
+  <entry name="location" type="string">
+    <label>Location</label>
+    <default></default>
+  </entry>
+  </group>
 </kcfg>

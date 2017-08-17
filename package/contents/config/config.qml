@@ -43,6 +43,13 @@ ConfigModel {
         source: "configTimeZones.qml"
     }
 
+
+    ConfigCategory {
+        name: i18n("Weather")
+        icon: "weather-few-clouds"
+        source: "configWeather.qml"
+    }
+
     Component.onCompleted: {
         var model = PlasmaCalendar.EventPluginsManager.model;
 

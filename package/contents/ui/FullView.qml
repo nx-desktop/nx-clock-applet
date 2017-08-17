@@ -7,4 +7,9 @@ ColumnLayout {
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
     }
+
+    WeatherView {
+        Layout.minimumHeight: 60
+        Layout.fillWidth: true
+    }
 }
