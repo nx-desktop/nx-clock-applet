@@ -11,7 +11,8 @@ GridLayout {
     columns: 2
     columnSpacing: 10
 
-    property alias cfg_location: location.text
+    property alias cfg_place: queryField.place
+    property alias cfg_query: queryField.query
 
     PlasmaComponents.Label {
         Layout.leftMargin: 20
@@ -19,10 +20,16 @@ GridLayout {
     }
 
     PlasmaComponents.TextField {
-        id: location
+        id: queryField
         Layout.minimumWidth: 300
         Layout.fillWidth: true
         Layout.rightMargin: 12
+
+        property bool accepted: false
+        property string query: ""
+        property string place: ""
+
+        text: place
 
         focus: true
         Keys.priority: Keys.BeforeItem
@@ -45,8 +52,10 @@ GridLayout {
         }
 
         Keys.onReleased: {
-            if (event.text !== "" && text != weatherDataSource.query)
+            if (event.text !== "" && text != weatherDataSource.query) {
                 weatherDataSource.query = text
+                queryField.accepted = false
+            }
         }
 
         PlasmaCore.FrameSvgItem {
@@ -60,8 +69,9 @@ GridLayout {
 
             clip: true
             height: Math.min(6, placesSuggestionModel.count) * 32
-            visible: (activeFocus || location.activeFocus)
+            visible: (activeFocus || queryField.activeFocus)
                      && placesSuggestionModel.count > 0
+                     && !queryField.accepted
 
             PlasmaExtras.ScrollArea {
                 anchors.fill: parent
@@ -73,16 +83,37 @@ GridLayout {
                     delegate: PlasmaComponents.ListItem {
                         height: 32
                         width: suggestionsListView.width
-                        PlasmaComponents.Label {
+                        RowLayout {
                             anchors.fill: parent
-                            text: model.text
+                            Image {
+                                Layout.leftMargin: 6
+                                Layout.preferredHeight: 18
+                                Layout.preferredWidth: 18
+                                Layout.alignment: Qt.AlignVCenter
+
+                                source: model.icon
+                            }
+
+                            PlasmaComponents.Label {
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                                Layout.leftMargin: 6
+
+                                text: model.text
+                            }
                         }
 
                         MouseArea {
                             anchors.fill: parent
 
                             hoverEnabled: true
-                            onClicked: location.text = model.text
+                            onClicked: {
+                                queryField.place = model.text
+                                queryField.query = model.query
+                                queryField.accepted = true
+
+                                print("  ----  ",cfg_query, cfg_place)
+                            }
                             onEntered: suggestionsListView.currentIndex = index
                         }
                     }
@@ -108,28 +139,64 @@ GridLayout {
         engine: "weather"
 
         property string query: ""
-        readonly property var ions: ["bbcukmet"]
+        readonly property var ions: ["bbcukmet", "noaa", "wettercom", "envcan"]
 
         onDataChanged: {
             placesSuggestionModel.clear()
-            var bbcukmetRegexp = /\|place\|(.*?)\|extra\|/g
+            var placeRegexp = /\|place\|(.*?)\|extra\|(.*?)(?=(\||$))/g
 
             for (var k in data) {
-                if (k.startsWith('bbcukmet') && data[k]) {
+                // Ignore empty results data
+                if (!data[k])
+                    continue
+
+                var ion = ""
+                var icon = ""
+
+                if (k.startsWith('bbcukmet')) {
+                    ion = 'bbcukmet'
+                    icon = "http://www.bbc.com/favicon.ico"
+                }
+
+                if (k.startsWith('noaa')) {
+                    ion = 'noaa'
+                    icon = 'http://www.noaa.gov/sites/all/themes/custom/noaa/images/noaa_logo_circle_bw_72x72.svg'
+                }
+
+                if (k.startsWith('wettercom') ) {
+                    ion = 'wettercom'
+                    icon = 'http://www.wetter.com/favicon.ico'
+                }
+
+                if (k.startsWith('envcan')) {
+                    ion = 'envcan'
+                    icon = 'https://weather.gc.ca/favicon.ico'
+                }
+
+                if (ion != '') {
                     var output = data[k]['validate']
-                    var match = bbcukmetRegexp.exec(output)
+                    print(output)
+                    var match = placeRegexp.exec(output)
                     while (match != null) {
                         var item = {
-                            text: match[1]
+                            text: match[1],
+                            query: ion + "|place|"+match[1],
+                            icon: icon
                         }
+                        if (match[3])
+                            item.query = item.query + '|extra|' + match[3]
+
                         placesSuggestionModel.append(item)
-                        match = bbcukmetRegexp.exec(output)
+                        match = placeRegexp.exec(output)
                     }
                 }
             }
         }
 
         onQueryChanged: {
+            if (query.length < 3)
+                return
+
             // Clear previous sources
             for (var i in connectedSources)
                 disconnectSource(connectedSources[i])

@@ -67,9 +67,13 @@
     </entry>
   </group>
   <group name="Weather">
-  <entry name="location" type="string">
-    <label>Location</label>
-    <default></default>
-  </entry>
+      <entry name="place" type="string">
+        <label>Place</label>
+        <default>Claxton Evans County Airport, GA</default>
+      </entry>
+      <entry name="query" type="string">
+        <label>ion</label>
+        <default>noaa|weather|Claxton Evans County Airport, GA</default>
+      </entry>
   </group>
 </kcfg>

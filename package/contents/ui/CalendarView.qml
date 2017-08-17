@@ -120,41 +120,41 @@ Item {
             }
         }
 
-        PlasmaComponents.Label {
-            id: dayLabel
-            anchors.left: parent.left
-            height: dayHeading.height + dateHeading.height
-            width: paintedWidth
-            font.pixelSize: height
-            font.weight: Font.Light
-            text: agenda.dateString("dd")
-            opacity: 0.6
-        }
+//        PlasmaComponents.Label {
+//            id: dayLabel
+//            anchors.left: parent.left
+//            height: dayHeading.height + dateHeading.height
+//            width: paintedWidth
+//            font.pixelSize: height
+//            font.weight: Font.Light
+//            text: agenda.dateString("dd")
+//            opacity: 0.6
+//        }
 
-        PlasmaExtras.Heading {
-            id: dayHeading
-            anchors {
-                top: parent.top
-                left: dayLabel.right
-                right: parent.right
-                leftMargin: spacing / 2
-            }
-            level: 1
-            elide: Text.ElideRight
-            text: agenda.dateString("dddd")
-        }
-        PlasmaComponents.Label {
-            id: dateHeading
-            anchors {
-                top: dayHeading.bottom
-                left: dayLabel.right
-                right: parent.right
-                leftMargin: spacing / 2
-            }
-            elide: Text.ElideRight
-            text: Qt.locale().standaloneMonthName(monthView.currentDate.getMonth())
-                             + agenda.dateString(" yyyy")
-        }
+//        PlasmaExtras.Heading {
+//            id: dayHeading
+//            anchors {
+//                top: parent.top
+//                left: dayLabel.right
+//                right: parent.right
+//                leftMargin: spacing / 2
+//            }
+//            level: 1
+//            elide: Text.ElideRight
+//            text: agenda.dateString("dddd")
+//        }
+//        PlasmaComponents.Label {
+//            id: dateHeading
+//            anchors {
+//                top: dayHeading.bottom
+//                left: dayLabel.right
+//                right: parent.right
+//                leftMargin: spacing / 2
+//            }
+//            elide: Text.ElideRight
+//            text: Qt.locale().standaloneMonthName(monthView.currentDate.getMonth())
+//                             + agenda.dateString(" yyyy")
+//        }
 
         TextMetrics {
             id: dateLabelMetrics
@@ -169,12 +169,13 @@ Item {
 
         PlasmaExtras.ScrollArea {
             id: holidaysView
-            anchors {
-                top: dateHeading.bottom
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
+            anchors.fill: parent
+//            anchors {
+//                top: dateHeading.bottom
+//                left: parent.left
+//                right: parent.right
+//                bottom: parent.bottom
+//            }
             flickableItem.boundsBehavior: Flickable.StopAtBounds
 
             ListView {

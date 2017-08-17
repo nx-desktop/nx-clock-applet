@@ -8,17 +8,27 @@ Item {
         id: weatherDataSource
         engine: "weather"
         interval: 10000
+        property var place: plasmoid.configuration.place
+        property var query: plasmoid.configuration.query
 
         onDataChanged: {
-            var list = data["bbcukmet|validate|"+location]
-            for (var k in list)
-                print(list[k].split("|place|"))
+            print (query)
+            print(data)
+
+            for (var k in data)
+                print(k, data[k])
         }
-        Component.onCompleted: {
-//            print (sources)
-            weatherDataSource.connectSource("bbcukmet|validate|"+location)
+
+        onQueryChanged: updateSource()
+//        Component.onCompleted: updateSource()
+
+        function updateSource() {
+            print (query)
+            // Clear previous sources
+            for (var i in connectedSources)
+                disconnectSource(connectedSources[i])
+
+            weatherDataSource.connectSource(query)
         }
     }
-
-
 }
