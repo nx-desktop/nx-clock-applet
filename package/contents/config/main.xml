@@ -73,7 +73,7 @@
       </entry>
       <entry name="query" type="string">
         <label>ion</label>
-        <default>noaa|weather|Claxton Evans County Airport, GA</default>
+        <default>wettercom|weather|Havanna, Provincia de Ciudad de La Habana, CU|CUXY00004;Havanna</default>
       </entry>
   </group>
 </kcfg>
