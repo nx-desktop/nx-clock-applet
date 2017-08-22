@@ -70,8 +70,7 @@ GridLayout {
             clip: true
             height: Math.min(6, placesSuggestionModel.count) * 32
             visible: (activeFocus || queryField.activeFocus)
-                     && placesSuggestionModel.count > 0
-                     && !queryField.accepted
+                     && placesSuggestionModel.count > 0 && !queryField.accepted
 
             PlasmaExtras.ScrollArea {
                 anchors.fill: parent
@@ -112,7 +111,7 @@ GridLayout {
                                 queryField.query = model.query
                                 queryField.accepted = true
 
-                                print("  ----  ",cfg_query, cfg_place)
+                                print("Place selected: ", cfg_query, cfg_place)
                             }
                             onEntered: suggestionsListView.currentIndex = index
                         }
@@ -139,71 +138,63 @@ GridLayout {
         engine: "weather"
 
         property string query: ""
-        readonly property var ions: ["bbcukmet", "noaa", "wettercom", "envcan"]
+        property string old_query: ""
+        readonly property var ions: ["noaa", "bbcukmet", "wettercom", "envcan"]
 
+        function extract_items(output, ion, icon) {
+            var placeRegexp = /\|place\|(.*?)\|extra\|(.*?)(?=(\||$))/g
+            var match = placeRegexp.exec(output)
+            //                    print ('\n',output,'\n')
+            while (match != null) {
+                var item = {
+                    text: match[1],
+                    query: ion + "|weather|" + match[1],
+                    icon: icon
+                }
+                var extras = match[2]
+                if (extras !== '|' && extras !== '')
+                    item.query = item.query + '|' + extras
+
+                placesSuggestionModel.append(item)
+                match = placeRegexp.exec(output)
+            }
+        }
         onDataChanged: {
             placesSuggestionModel.clear()
-            var placeRegexp = /\|place\|(.*?)\|extra\|(.*?)(?=(\||$))/g
 
-            for (var k in data) {
-                // Ignore empty results data
-                if (!data[k])
-                    continue
+            var bbcukmet_results = data['bbcukmet|validate|' + query]
+            if (bbcukmet_results)
+                extract_items(bbcukmet_results['validate'], 'bbcukmet',
+                              "http://www.bbc.com/favicon.ico")
 
-                var ion = ""
-                var icon = ""
+            var noaa_results = data['noaa|validate|' + query]
+            if (noaa_results)
+                extract_items(
+                            noaa_results['validate'], 'noaa',
+                            'http://www.noaa.gov/sites/all/themes/custom/noaa/images/noaa_logo_circle_bw_72x72.svg')
 
-                if (k.startsWith('bbcukmet')) {
-                    ion = 'bbcukmet'
-                    icon = "http://www.bbc.com/favicon.ico"
-                }
+            var wettercom_results = data['wettercom|validate|' + query]
+            if (wettercom_results)
+                extract_items(bbcukmet_results['validate'], 'wettercom',
+                              'http://www.wetter.com/favicon.ico')
 
-                if (k.startsWith('noaa')) {
-                    ion = 'noaa'
-                    icon = 'http://www.noaa.gov/sites/all/themes/custom/noaa/images/noaa_logo_circle_bw_72x72.svg'
-                }
-
-                if (k.startsWith('wettercom') ) {
-                    ion = 'wettercom'
-                    icon = 'http://www.wetter.com/favicon.ico'
-                }
-
-                if (k.startsWith('envcan')) {
-                    ion = 'envcan'
-                    icon = 'https://weather.gc.ca/favicon.ico'
-                }
-
-                if (ion != '') {
-                    var output = data[k]['validate']
-                    print(output)
-                    var match = placeRegexp.exec(output)
-                    while (match != null) {
-                        var item = {
-                            text: match[1],
-                            query: ion + "|place|"+match[1],
-                            icon: icon
-                        }
-                        if (match[3])
-                            item.query = item.query + '|extra|' + match[3]
-
-                        placesSuggestionModel.append(item)
-                        match = placeRegexp.exec(output)
-                    }
-                }
-            }
+            var envcan_results = data['envcan|validate|' + query]
+            if (envcan_results)
+                extract_items(bbcukmet_results['validate'], 'envcan',
+                              "https://weather.gc.ca/favicon.ico")
         }
 
         onQueryChanged: {
             if (query.length < 3)
                 return
 
-            // Clear previous sources
-            for (var i in connectedSources)
-                disconnectSource(connectedSources[i])
-
             // Connect new sources
-            for (var i in ions)
+            for (var i in ions) {
+                disconnectSource(ions[i] + "|validate|" + old_query)
                 weatherDataSource.connectSource(ions[i] + "|validate|" + query)
+            }
+
+            old_query = query
         }
     }
 }
