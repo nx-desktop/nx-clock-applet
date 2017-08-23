@@ -9,7 +9,11 @@ ColumnLayout {
     }
 
     WeatherView {
+        visible: plasmoid.configuration.show_weather
+
         Layout.minimumHeight: 60
+        Layout.rightMargin: 18
+        Layout.leftMargin: 12
         Layout.fillWidth: true
     }
 }

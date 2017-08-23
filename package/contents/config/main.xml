@@ -67,13 +67,21 @@
     </entry>
   </group>
   <group name="Weather">
+      <entry name="show_weather" type="bool">
+        <label>Should the wheater be display</label>
+        <default>true</default>
+      </entry>
       <entry name="place" type="string">
         <label>Place</label>
-        <default>Claxton Evans County Airport, GA</default>
+        <default></default>
       </entry>
       <entry name="query" type="string">
         <label>ion</label>
-        <default>wettercom|weather|Havanna, Provincia de Ciudad de La Habana, CU|CUXY00004;Havanna</default>
+        <default></default>
+      </entry>
+      <entry name="refresh_time" type="int">
+        <label>Refresh time in millisecond</label>
+        <default>3600000</default>
       </entry>
   </group>
 </kcfg>

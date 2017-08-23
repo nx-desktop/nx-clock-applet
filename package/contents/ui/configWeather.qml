@@ -13,6 +13,17 @@ GridLayout {
 
     property alias cfg_place: queryField.place
     property alias cfg_query: queryField.query
+    property alias cfg_show_weather: enabledCheckBox.checked
+    property alias cfg_refresh_time: refreshTimeTextField.text
+
+    PlasmaComponents.Label {
+        Layout.leftMargin: 20
+        text: i18n("Enabled")
+    }
+
+    PlasmaComponents.CheckBox {
+        id: enabledCheckBox
+    }
 
     PlasmaComponents.Label {
         Layout.leftMargin: 20
@@ -23,7 +34,6 @@ GridLayout {
         id: queryField
         Layout.minimumWidth: 300
         Layout.fillWidth: true
-        Layout.rightMargin: 12
 
         property bool accepted: false
         property string query: ""
@@ -58,8 +68,9 @@ GridLayout {
             }
         }
 
+        z: innerFrame.visible ? 100 : 0
         PlasmaCore.FrameSvgItem {
-
+            id: innerFrame
             imagePath: "dialogs/background"
             enabledBorders: PlasmaCore.FrameSvg.NoBorder
 
@@ -124,6 +135,17 @@ GridLayout {
         }
     }
 
+    PlasmaComponents.Label {
+        text: i18n("Refresh time")
+
+        Layout.leftMargin: 20
+    }
+    PlasmaComponents.TextField {
+        id: refreshTimeTextField
+
+        Layout.fillWidth: true
+    }
+
     Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
@@ -142,17 +164,25 @@ GridLayout {
         readonly property var ions: ["noaa", "bbcukmet", "wettercom", "envcan"]
 
         function extract_items(output, ion, icon) {
-            var placeRegexp = /\|place\|(.*?)\|extra\|(.*?)(?=(\||$))/g
+//            print('\n', output, '\n')
+
+            var placeRegexp = /\|place\|(.*?)(\|extra\|(.*?))?(?=(\||$))/g
             var match = placeRegexp.exec(output)
-            //                    print ('\n',output,'\n')
+
             while (match != null) {
                 var item = {
                     text: match[1],
                     query: ion + "|weather|" + match[1],
                     icon: icon
                 }
-                var extras = match[2]
-                if (extras !== '|' && extras !== '')
+                var extras
+
+                if (ion === 'bbcukmet' || ion === 'wettercom') {
+                    extras = match[3]
+                } else
+                    extras = match[2]
+
+                if (extras && extras !== '|' && extras !== '')
                     item.query = item.query + '|' + extras
 
                 placesSuggestionModel.append(item)
@@ -175,12 +205,12 @@ GridLayout {
 
             var wettercom_results = data['wettercom|validate|' + query]
             if (wettercom_results)
-                extract_items(bbcukmet_results['validate'], 'wettercom',
+                extract_items(wettercom_results['validate'], 'wettercom',
                               'http://www.wetter.com/favicon.ico')
 
             var envcan_results = data['envcan|validate|' + query]
             if (envcan_results)
-                extract_items(bbcukmet_results['validate'], 'envcan',
+                extract_items(envcan_results['validate'], 'envcan',
                               "https://weather.gc.ca/favicon.ico")
         }
 
