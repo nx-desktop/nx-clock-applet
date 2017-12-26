@@ -26,7 +26,7 @@ Item {
 
         property double temperature
         property int temperature_unit
-        property string temperature_lavel: {
+        property string temperature_label: {
             if (temperature_unit == 6001)
                 return '°C'
             if (temperature_unit == 6002)
@@ -60,7 +60,7 @@ Item {
                 id: temperature
 
                 visible: p.temperature != 0
-                text: p.temperature.toFixed(1) + p.temperature_lavel
+                text: p.temperature.toFixed(1) + p.temperature_label
 
                 Layout.rowSpan: 2
             }
@@ -104,7 +104,7 @@ Item {
                                 text: {
                                     var str = ''
                                     if (model.temperature_max !== '')
-                                        str += model.temperature_max + p.temperature_lavel
+                                        str += model.temperature_max + p.temperature_label
                                     else
                                         str += '-'
                                     return str
@@ -118,7 +118,7 @@ Item {
                                 text: {
                                     var str = ''
                                     if (model.temperature_min != '')
-                                        str += model.temperature_min + p.temperature_lavel
+                                        str += model.temperature_min + p.temperature_label
                                     else
                                         str += '-'
 
@@ -160,7 +160,7 @@ Item {
 
                 text: {
                     if (plasmoid.configuration.place === '')
-                        return "Please configure the your location."
+                        return "Please configure your location."
 
                     if (p.loading)
                         return "Loading weather data of %1.".arg(
