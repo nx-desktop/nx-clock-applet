@@ -1,0 +1,11 @@
+nomad-clock-applet (1.0.1-1) nxos; urgency=medium
+
+  * Fix typos.
+
+ -- Uri Herrera <uri_herrera@nitrux.in>  Fri, 26 Jan 2018 00:00:00 -0500
+
+nomad-clock-applet (1.0-1) nxos; urgency=medium
+
+  * Initial release
+
+ -- Alexis López Zubieta <azubieta90@gmail.com>  Wed, 23 Aug 2017 00:38:51 -0500
