@@ -16,5 +16,23 @@ install:
 script:
  - docker run --rm -v $(pwd)/:/build/ -w /build/ ubuntu:bionic /bin/bash travis-build.sh
 
+branches:
+  only:
+    - master
+    - development
+
+deploy:
+  - provider: script
+    script: ./source/nxos-repository-util.sh upload testing *.deb
+    skip_cleanup: true
+    on:
+      branch: master
+      
+  - provider: script
+    script: ./source/nxos-repository-util.sh upload development *.deb
+    skip_cleanup: true
+    on:
+      branch: development
+
 notifications:
   email: false
