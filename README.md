@@ -8,6 +8,8 @@ This is the repository for the Clock, Calendar and Weather used in Nitrux.
 - Qt 5.8+.
 - Qml.
 - QtQuick.
+- I18n
+- Plasma 5.8.4+.
 
 # Issues
 If you find problems with the contents of this repository please create an issue.
