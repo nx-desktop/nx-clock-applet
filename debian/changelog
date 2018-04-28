@@ -1,8 +1,8 @@
-nomad-clock-applet (1.0.1-1) nxos; urgency=medium
+nomad-clock-applet (1.0.2-1) nxos; urgency=medium
 
-  * Fix typos.
+  * Change text color to siplay temp.
 
- -- Uri Herrera <uri_herrera@nitrux.in>  Fri, 26 Jan 2018 00:00:00 -0500
+ -- Uri Herrera <uri_herrera@nitrux.in>  Fri, 27 Apr 2018 20:18:00 -0500
 
 nomad-clock-applet (1.0-1) nxos; urgency=medium
 

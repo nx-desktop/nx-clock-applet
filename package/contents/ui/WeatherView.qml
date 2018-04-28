@@ -109,7 +109,7 @@ Item {
                                         str += '-'
                                     return str
                                 }
-                                color: 'darkred'
+//                                 color: 'darkred'
                             }
                             PlasmaComponents.Label {
                                 text: '/'
@@ -124,7 +124,7 @@ Item {
 
                                     return str
                                 }
-                                color: 'blue'
+//                                 color: 'blue'
                             }
                             Layout.alignment: Qt.AlignHCenter
                         }
