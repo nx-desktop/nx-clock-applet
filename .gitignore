@@ -1,3 +1,4 @@
 *.qmlc
 *.jsc
 *.txt.user
+build
