@@ -28,7 +28,7 @@ find_package(KF5 REQUIRED
 
 
 # add_subdirectory(lib)
-# add_subdirectory(plugin)
+add_subdirectory(plugin)
 
 plasma_install_package(package org.nomad.clock)
 

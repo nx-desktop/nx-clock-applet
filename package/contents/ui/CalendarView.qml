@@ -29,8 +29,7 @@ Item {
     Layout.minimumHeight: _minimumHeight
 
     // The "sensible" values
-//    property int _minimumWidth: (showAgenda ? agendaViewWidth : 0) + monthViewWidth
-    property int _minimumWidth: monthViewWidth
+    property int _minimumWidth: (showAgenda ? agendaViewWidth : 0) + monthViewWidth
     property int _minimumHeight: units.gridUnit * 14
     Layout.preferredWidth: _minimumWidth
     Layout.preferredHeight: _minimumHeight * 1.5
@@ -40,8 +39,7 @@ Item {
     readonly property int agendaViewWidth: _minimumHeight * 1.5
     readonly property int monthViewWidth: monthView.showWeekNumbers ? Math.round(_minimumHeight * 1.75) : Math.round(_minimumHeight * 1.5)
 
-//    property int boxWidth: (agendaViewWidth + monthViewWidth - ((showAgenda ? 3 : 4) * spacing)) / 2
-    property int boxWidth: monthViewWidth
+    property int boxWidth: (agendaViewWidth + monthViewWidth - ((showAgenda ? 3 : 4) * spacing)) / 2
 
     property int spacing: units.largeSpacing
     property alias borderWidth: monthView.borderWidth
@@ -60,12 +58,14 @@ Item {
         id: agenda
         visible: calendar.showAgenda
 
+        width: boxWidth
         anchors {
-            top: cal.bottom
+            top: parent.top
             left: parent.left
-            right: parent.right
             bottom: parent.bottom
-            margins: spacing
+            leftMargin: spacing
+            topMargin: spacing
+            bottomMargin: spacing
         }
 
         function dateString(format) {
@@ -120,41 +120,47 @@ Item {
             }
         }
 
-//        PlasmaComponents.Label {
-//            id: dayLabel
-//            anchors.left: parent.left
-//            height: dayHeading.height + dateHeading.height
-//            width: paintedWidth
-//            font.pixelSize: height
-//            font.weight: Font.Light
-//            text: agenda.dateString("dd")
-//            opacity: 0.6
-//        }
+        Binding {
+            target: plasmoid
+            property: "hideOnWindowDeactivate"
+            value: !plasmoid.configuration.pin
+        }
 
-//        PlasmaExtras.Heading {
-//            id: dayHeading
-//            anchors {
-//                top: parent.top
-//                left: dayLabel.right
-//                right: parent.right
-//                leftMargin: spacing / 2
-//            }
-//            level: 1
-//            elide: Text.ElideRight
-//            text: agenda.dateString("dddd")
-//        }
-//        PlasmaComponents.Label {
-//            id: dateHeading
-//            anchors {
-//                top: dayHeading.bottom
-//                left: dayLabel.right
-//                right: parent.right
-//                leftMargin: spacing / 2
-//            }
-//            elide: Text.ElideRight
-//            text: Qt.locale().standaloneMonthName(monthView.currentDate.getMonth())
-//                             + agenda.dateString(" yyyy")
-//        }
+        PlasmaComponents.Label {
+            id: dayLabel
+            anchors.left: parent.left
+            height: dayHeading.height + dateHeading.height
+            width: paintedWidth
+            font.pixelSize: height
+            font.weight: Font.Light
+            text: agenda.dateString("dd")
+            opacity: 0.6
+        }
+
+        PlasmaExtras.Heading {
+            id: dayHeading
+            anchors {
+                top: parent.top
+                left: dayLabel.right
+                right: parent.right
+                leftMargin: spacing / 2
+            }
+            level: 1
+            elide: Text.ElideRight
+            text: agenda.dateString("dddd")
+        }
+        PlasmaComponents.Label {
+            id: dateHeading
+            anchors {
+                top: dayHeading.bottom
+                left: dayLabel.right
+                right: parent.right
+                leftMargin: spacing / 2
+            }
+            elide: Text.ElideRight
+            text: Qt.locale().standaloneMonthName(monthView.currentDate.getMonth())
+                             + agenda.dateString(" yyyy")
+        }
 
         TextMetrics {
             id: dateLabelMetrics
@@ -169,13 +175,12 @@ Item {
 
         PlasmaExtras.ScrollArea {
             id: holidaysView
-            anchors.fill: parent
-//            anchors {
-//                top: dateHeading.bottom
-//                left: parent.left
-//                right: parent.right
-//                bottom: parent.bottom
-//            }
+            anchors {
+                top: dateHeading.bottom
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
             flickableItem.boundsBehavior: Flickable.StopAtBounds
 
             ListView {
@@ -212,90 +217,103 @@ Item {
                         return true;
                     }
 
-                    GridLayout {
-                        columns: 3
-                        rows: 2
-                        rowSpacing: 0
-                        columnSpacing: 2 * units.smallSpacing
-
+                    PlasmaCore.ToolTipArea {
                         width: parent.width
+                        height: eventGrid.height
+                        active: eventTitle.truncated || eventDescription.truncated
+                        mainText: active ? eventTitle.text : ""
+                        subText: active ? eventDescription.text : ""
 
-                        Rectangle {
-                            id: eventColor
+                        GridLayout {
+                            id: eventGrid
+                            columns: 3
+                            rows: 2
+                            rowSpacing: 0
+                            columnSpacing: 2 * units.smallSpacing
 
-                            Layout.row: 0
-                            Layout.column: 0
-                            Layout.rowSpan: 2
-                            Layout.fillHeight: true
+                            width: parent.width
 
-                            color: modelData.eventColor
-                            width: 5 * units.devicePixelRatio
-                            visible: modelData.eventColor !== ""
-                        }
+                            Rectangle {
+                                id: eventColor
 
-                        PlasmaComponents.Label {
-                            id: startTimeLabel
+                                Layout.row: 0
+                                Layout.column: 0
+                                Layout.rowSpan: 2
+                                Layout.fillHeight: true
 
-                            readonly property bool startsToday: modelData.startDateTime - monthView.currentDate >= 0
-                            readonly property bool startedYesterdayLessThan12HoursAgo: modelData.startDateTime - monthView.currentDate >= -43200000 //12hrs in ms
+                                color: modelData.eventColor
+                                width: 5 * units.devicePixelRatio
+                                visible: modelData.eventColor !== ""
+                            }
 
-                            Layout.row: 0
-                            Layout.column: 1
-                            Layout.minimumWidth: dateLabelMetrics.width
+                            PlasmaComponents.Label {
+                                id: startTimeLabel
 
-                            text: startsToday || startedYesterdayLessThan12HoursAgo
-                                    ? Qt.formatTime(modelData.startDateTime)
-                                    : agenda.formatDateWithoutYear(modelData.startDateTime)
-                            horizontalAlignment: Qt.AlignRight
-                            visible: eventItem.hasTime
-                        }
+                                readonly property bool startsToday: modelData.startDateTime - monthView.currentDate >= 0
+                                readonly property bool startedYesterdayLessThan12HoursAgo: modelData.startDateTime - monthView.currentDate >= -43200000 //12hrs in ms
 
-                        PlasmaComponents.Label {
-                            id: endTimeLabel
+                                Layout.row: 0
+                                Layout.column: 1
+                                Layout.minimumWidth: dateLabelMetrics.width
 
-                            readonly property bool endsToday: modelData.endDateTime - monthView.currentDate <= 86400000 // 24hrs in ms
-                            readonly property bool endsTomorrowInLessThan12Hours: modelData.endDateTime - monthView.currentDate <= 86400000 + 43200000 // 36hrs in ms
+                                text: startsToday || startedYesterdayLessThan12HoursAgo
+                                        ? Qt.formatTime(modelData.startDateTime)
+                                        : agenda.formatDateWithoutYear(modelData.startDateTime)
+                                horizontalAlignment: Qt.AlignRight
+                                visible: eventItem.hasTime
+                            }
 
-                            Layout.row: 1
-                            Layout.column: 1
-                            Layout.minimumWidth: dateLabelMetrics.width
+                            PlasmaComponents.Label {
+                                id: endTimeLabel
 
-                            text: endsToday || endsTomorrowInLessThan12Hours
-                                    ? Qt.formatTime(modelData.endDateTime)
-                                    : agenda.formatDateWithoutYear(modelData.endDateTime)
-                            horizontalAlignment: Qt.AlignRight
-                            enabled: false
+                                readonly property bool endsToday: modelData.endDateTime - monthView.currentDate <= 86400000 // 24hrs in ms
+                                readonly property bool endsTomorrowInLessThan12Hours: modelData.endDateTime - monthView.currentDate <= 86400000 + 43200000 // 36hrs in ms
 
-                            visible: eventItem.hasTime
-                        }
+                                Layout.row: 1
+                                Layout.column: 1
+                                Layout.minimumWidth: dateLabelMetrics.width
 
-                        PlasmaComponents.Label {
-                            id: eventTitle
+                                text: endsToday || endsTomorrowInLessThan12Hours
+                                        ? Qt.formatTime(modelData.endDateTime)
+                                        : agenda.formatDateWithoutYear(modelData.endDateTime)
+                                horizontalAlignment: Qt.AlignRight
+                                enabled: false
 
-                            Layout.row: 0
-                            Layout.column: 2
-                            Layout.fillWidth: true
+                                visible: eventItem.hasTime
+                            }
 
-                            font.weight: Font.Bold
-                            elide: Text.ElideRight
-                            text: modelData.title
-                            verticalAlignment: Text.AlignVCenter
-                        }
+                            PlasmaComponents.Label {
+                                id: eventTitle
 
-                        PlasmaComponents.Label {
-                            id: eventDescription
+                                readonly property bool wrap: eventDescription.text === ""
 
-                            Layout.row: 1
-                            Layout.column: 2
-                            Layout.fillWidth: true
+                                Layout.row: 0
+                                Layout.rowSpan: wrap ? 2 : 1
+                                Layout.column: 2
+                                Layout.fillWidth: true
 
-                            elide: Text.ElideRight
-                            text: modelData.description
-                            verticalAlignment: Text.AlignVCenter
-                            maximumLineCount: 1
-                            enabled: false
+                                font.weight: Font.Bold
+                                elide: Text.ElideRight
+                                text: modelData.title
+                                verticalAlignment: Text.AlignVCenter
+                                maximumLineCount: 2
+                                wrapMode: wrap ? Text.Wrap : Text.NoWrap
+                            }
 
-                            visible: text !== ""
+                            PlasmaComponents.Label {
+                                id: eventDescription
+
+                                Layout.row: 1
+                                Layout.column: 2
+                                Layout.fillWidth: true
+
+                                elide: Text.ElideRight
+                                text: modelData.description
+                                verticalAlignment: Text.AlignVCenter
+                                enabled: false
+
+                                visible: text !== ""
+                            }
                         }
                     }
                 }
@@ -323,11 +341,11 @@ Item {
     }
     Item {
         id: cal
-        height: _minimumHeight * 1.4
+        width: boxWidth
         anchors {
             top: parent.top
-            left: parent.left
             right: parent.right
+            bottom: parent.bottom
             margins: spacing
         }
 
@@ -348,6 +366,7 @@ Item {
         height: width
         checkable: true
         iconSource: "window-pin"
-        onCheckedChanged: plasmoid.hideOnWindowDeactivate = !checked
+        checked: plasmoid.configuration.pin
+        onCheckedChanged: plasmoid.configuration.pin = checked
     }
 }
