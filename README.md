@@ -1,4 +1,4 @@
-# Nomad Clock Applet [![Build Status](https://travis-ci.org/nomad-desktop/nomad-clock-applet.svg?branch=master)](https://travis-ci.org/nomad-desktop/nomad-clock-applet)
+# Nx Clock Applet [![Build Status](https://travis-ci.org/nx-desktop/nx-clock-applet.svg?branch=master)](https://travis-ci.org/nx-desktop/nx-clock-applet)
 
 This is the repository for the Clock, Calendar and Weather used in Nitrux.
 

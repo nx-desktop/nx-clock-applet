@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Nomad Clock
-Name[x-test]=xxNomad Clockxx
+Name=Nx Clock
+Name[x-test]=xxNx Clockxx
 
 Comment=Time displayed in a digital format and weather
 Comment[x-test]=xxTime displayed in a digital formatxx

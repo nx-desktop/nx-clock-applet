@@ -11,29 +11,29 @@ version=4
 
 # HTTP site (basic)
 #http://example.com/downloads.html \
-#  files/nomad-clock-applet-([\d\.]+)\.tar\.gz debian uupdate
+#  files/nx-clock-applet-([\d\.]+)\.tar\.gz debian uupdate
 
 # Uncommment to examine a FTP server
-#ftp://ftp.example.com/pub/nomad-clock-applet-(.*)\.tar\.gz debian uupdate
+#ftp://ftp.example.com/pub/nx-clock-applet-(.*)\.tar\.gz debian uupdate
 
 # SourceForge hosted projects
-# http://sf.net/nomad-clock-applet/ nomad-clock-applet-(.*)\.tar\.gz debian uupdate
+# http://sf.net/nx-clock-applet/ nx-clock-applet-(.*)\.tar\.gz debian uupdate
 
 # GitHub hosted projects
 #opts="filenamemangle="s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%<project>-$1.tar.gz%" \
-#   https://github.com/<user>/nomad-clock-applet/tags \
+#   https://github.com/<user>/nx-clock-applet/tags \
 #   (?:.*?/)?v?(\d[\d.]*)\.tar\.gz debian uupdate
 
 # PyPI
-# https://pypi.python.org/packages/source/<initial>/nomad-clock-applet/ \
-#   nomad-clock-applet-(.+)\.tar\.gz debian uupdate
+# https://pypi.python.org/packages/source/<initial>/nx-clock-applet/ \
+#   nx-clock-applet-(.+)\.tar\.gz debian uupdate
 
 # Direct Git
-# opts="mode=git" http://git.example.com/nomad-clock-applet.git \
+# opts="mode=git" http://git.example.com/nx-clock-applet.git \
 #   refs/tags/v([\d\.]+) debian uupdate
 
 
 
 
 # Uncomment to find new files on GooglePages
-# http://example.googlepages.com/foo.html nomad-clock-applet-(.*)\.tar\.gz
+# http://example.googlepages.com/foo.html nx-clock-applet-(.*)\.tar\.gz

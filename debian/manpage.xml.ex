@@ -56,9 +56,9 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
   <!ENTITY dhsection   "SECTION">
   <!-- TITLE should be something like "User commands" or similar (see
        http://www.tldp.org/HOWTO/Man-Page/q2.html). -->
-  <!ENTITY dhtitle     "nomad-clock-applet User Manual">
-  <!ENTITY dhucpackage "Nomad-clock-applet">
-  <!ENTITY dhpackage   "nomad-clock-applet">
+  <!ENTITY dhtitle     "nx-clock-applet User Manual">
+  <!ENTITY dhucpackage "Nx-clock-applet">
+  <!ENTITY dhpackage   "nx-clock-applet">
 ]>
 
 <refentry>

@@ -1,5 +1,5 @@
 #!/bin/sh
-# preinst script for nomad-clock-applet
+# preinst script for nx-clock-applet
 #
 # see: dh_installdeb(1)
 

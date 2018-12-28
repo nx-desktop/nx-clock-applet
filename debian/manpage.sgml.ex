@@ -26,8 +26,8 @@ manpage.1: manpage.sgml
   <!ENTITY dhsection   "<manvolnum>SECTION</manvolnum>">
   <!ENTITY dhemail     "<email>azubieta90@gmail.com</email>">
   <!ENTITY dhusername  "Alexis L?pez Zubieta">
-  <!ENTITY dhucpackage "<refentrytitle>Nomad-clock-applet</refentrytitle>">
-  <!ENTITY dhpackage   "nomad-clock-applet">
+  <!ENTITY dhucpackage "<refentrytitle>Nx-clock-applet</refentrytitle>">
+  <!ENTITY dhpackage   "nx-clock-applet">
 
   <!ENTITY debian      "<productname>Debian</productname>">
   <!ENTITY gnu         "<acronym>GNU</acronym>">

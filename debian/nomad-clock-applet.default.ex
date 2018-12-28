@@ -1,6 +1,6 @@
-# Defaults for nomad-clock-applet initscript
-# sourced by /etc/init.d/nomad-clock-applet
-# installed at /etc/default/nomad-clock-applet by the maintainer scripts
+# Defaults for nx-clock-applet initscript
+# sourced by /etc/init.d/nx-clock-applet
+# installed at /etc/default/nx-clock-applet by the maintainer scripts
 
 #
 # This is a POSIX shell fragment
