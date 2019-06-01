@@ -20,5 +20,5 @@ echo "where we are"
 pwd
 echo "contents of here"
 ls -l
-debtap -u
+./debtap -u
 ./debtap ../*.deb
