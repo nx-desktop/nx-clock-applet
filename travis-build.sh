@@ -16,6 +16,8 @@ mkdir source
 mv ./* source/ # Hack for debuild
 cd source
 debuild -b -uc -us
-echo "contents of /build/"
-ls -l -R /build
-debtap ../*.deb
+echo "where we are"
+pwd
+echo "contents of here"
+ls -l
+#debtap ../*.deb
