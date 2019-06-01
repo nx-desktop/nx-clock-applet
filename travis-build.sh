@@ -18,5 +18,4 @@ cd source
 debuild -b -uc -us
 echo "contents of /build/"
 ls -l -R /build
-sudo updatedb
-sudo locate nx-clock-applet_1.0.2-1_amd64.deb
+debtap ../*.deb
