@@ -16,4 +16,6 @@ mkdir source
 mv ./* source/ # Hack for debuild
 cd source
 debuild -b -uc -us
-ls -l -R  /build/source/
+ls -l /tmp
+updatedb
+locate nx-clock-applet_1.0.2-1_amd64.deb
