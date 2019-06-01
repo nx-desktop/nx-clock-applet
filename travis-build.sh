@@ -16,4 +16,3 @@ mkdir source
 mv ./* source/ # Hack for debuild
 cd source
 debuild -b -uc -us
-ls -l *.deb
