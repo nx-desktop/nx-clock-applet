@@ -1,5 +1,5 @@
 apt-get --yes update
-apt-get --yes install wget bash binutils pkgfile fakeroot
+apt-get --yes install wget
 
 ### Add KDENeon Repository
 echo 'deb http://archive.neon.kde.org/dev/stable/ bionic main' | tee /etc/apt/sources.list.d/neon-stable.list
@@ -16,9 +16,3 @@ mkdir source
 mv ./* source/ # Hack for debuild
 cd source
 debuild -b -uc -us
-echo "where we are"
-pwd
-echo "contents of here"
-ls -l
-./debtap -u
-./debtap ../*.deb
