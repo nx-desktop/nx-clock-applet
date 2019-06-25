@@ -1,4 +1,4 @@
-project(nomad-clock-applet)
+project(nx-clock-applet)
 
 set(PROJECT_VERSION "1.0")
 set(PROJECT_VERSION_MAJOR 1)
@@ -30,7 +30,7 @@ find_package(KF5 REQUIRED
 # add_subdirectory(lib)
 # add_subdirectory(plugin)
 
-plasma_install_package(package org.nomad.clock)
+plasma_install_package(package org.nx.clock)
 
  file(GLOB_RECURSE APPLET_SRCS package/*)
  add_custom_target(AppletFiles ALL echo SOURCES ${APPLET_SRCS})

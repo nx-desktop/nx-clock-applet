@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Nx Clock
-Name[x-test]=xxNx Clockxx
+Name=NX Clock
+Name[x-test]=xxNX Clockxx
 
 Comment=Time displayed in a digital format and weather
 Comment[x-test]=xxTime displayed in a digital formatxx
@@ -12,7 +12,7 @@ X-KDE-ParentApp=
 X-KDE-PluginInfo-Author=Alexis López Zubieta
 X-KDE-PluginInfo-Email=azubieta90@gmail.com
 X-KDE-PluginInfo-License=GPLv2+
-X-KDE-PluginInfo-Name=org.nomad.clock
+X-KDE-PluginInfo-Name=org.nx.clock
 X-KDE-PluginInfo-Version=1.0
 # X-KDE-PluginInfo-Website=plasma.kde.org
 X-KDE-ServiceTypes=Plasma/Applet
