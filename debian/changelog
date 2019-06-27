@@ -1,3 +1,9 @@
+nx-clock-applet (1.0.3) nxos; urgency=medium
+
+  * Update
+
+ -- Uri Herrera <uri_herrera@nxos.org>  Thu, 26 Jun 2019 01:33:00 -0500
+
 nx-clock-applet (1.0.2-1) nxos; urgency=medium
 
   * Change text color to siplay temp.
