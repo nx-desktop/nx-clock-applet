@@ -2,8 +2,6 @@
 
 This is the repository for the Clock, Calendar and Weather used in Nitrux.
 
-![](https://i.imgur.com/bwYdHmk.png)
-
 # Requirements
 - Qt 5.8+.
 - Qml.
